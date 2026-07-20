@@ -22,6 +22,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.SearchFilter,)
     search_fields = ('name',)
     lookup_field = 'slug'
+    http_method_names = ['get', 'post', 'delete', 'head', 'options']
 
 
 class GenreViewSet(viewsets.ModelViewSet):
@@ -32,6 +33,7 @@ class GenreViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.SearchFilter,)
     search_fields = ('name',)
     lookup_field = 'slug'
+    http_method_names = ['get', 'post', 'delete', 'head', 'options']
 
 
 class TitleViewSet(viewsets.ModelViewSet):

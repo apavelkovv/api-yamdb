@@ -3,11 +3,21 @@ from django.db import models
 
 User = get_user_model()
 
+MAX_LENGTH_NAME = 256
+MAX_LENGTH_SLUG = 50
+
 
 class Category(models.Model):
-    """Модель категории (например, 'Книги', 'Фильмы', 'Музыка')."""
-    name = models.CharField(max_length=256, verbose_name='Название категории')
-    slug = models.SlugField(max_length=50, unique=True, verbose_name='Уникальный слаг')
+    """Модель категории."""
+    name = models.CharField(
+        max_length=MAX_LENGTH_NAME,
+        verbose_name='Название категории'
+    )
+    slug = models.SlugField(
+        max_length=MAX_LENGTH_SLUG,
+        unique=True,
+        verbose_name='Уникальный слаг'
+    )
 
     class Meta:
         verbose_name = 'Категория'
@@ -19,9 +29,16 @@ class Category(models.Model):
 
 
 class Genre(models.Model):
-    """Модель жанра (например, 'Сказка', 'Рок', 'Артхаус')."""
-    name = models.CharField(max_length=256, verbose_name='Название жанра')
-    slug = models.SlugField(max_length=50, unique=True, verbose_name='Уникальный слаг')
+    """Модель жанра."""
+    name = models.CharField(
+        max_length=MAX_LENGTH_NAME,
+        verbose_name='Название жанра'
+    )
+    slug = models.SlugField(
+        max_length=MAX_LENGTH_SLUG,
+        unique=True,
+        verbose_name='Уникальный слаг'
+    )
 
     class Meta:
         verbose_name = 'Жанр'
@@ -34,9 +51,18 @@ class Genre(models.Model):
 
 class Title(models.Model):
     """Модель произведения."""
-    name = models.CharField(max_length=256, verbose_name='Название произведения')
-    year = models.PositiveSmallIntegerField(verbose_name='Год выпуска', null=True, blank=True)
-    description = models.TextField(verbose_name='Описание', null=True, blank=True)
+    name = models.CharField(
+        max_length=MAX_LENGTH_NAME,
+        verbose_name='Название произведения'
+    )
+    year = models.PositiveSmallIntegerField(
+        verbose_name='Год выпуска',
+    )
+    description = models.TextField(
+        verbose_name='Описание',
+        null=True,
+        blank=True
+    )
     category = models.ForeignKey(
         Category,
         on_delete=models.SET_NULL,
