@@ -4,8 +4,11 @@ from rest_framework.pagination import PageNumberPagination
 
 from reviews.models import Category, Genre, Title
 
-from .permissions import IsAdminOrReadOnly
-
+from users.permissions import (
+    IsAdminOrReadOnly, 
+    IsAdmin, 
+    IsOwnerOrModeratorOrAdmin
+)
 from .serializers import (
     CategorySerializer,
     GenreSerializer,
