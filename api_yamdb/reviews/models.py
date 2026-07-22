@@ -105,3 +105,12 @@ class Comment(models.Model):
     )
     pub_date = models.DateTimeField(auto_now_add=True,
                                     verbose_name='Дата публикации')
+    
+    class Meta:
+        verbose_name = 'Комментарий'
+        verbose_name_plural = 'Комментарии'
+        ordering = ('-pub_date',)
+
+    def __str__(self):
+        return f'''Комментарий {self.id} к отзыву
+                {self.review.id} от {self.author.username}'''
