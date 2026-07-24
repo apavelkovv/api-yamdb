@@ -1,21 +1,33 @@
 from rest_framework import serializers
-
-from reviews.models import (Category, Genre, Title,
-                            Review, Comment)
+from reviews.models import Category, Comment, Genre, Review, Title
 
 
 class CategorySerializer(serializers.ModelSerializer):
     """Сериализатор для категорий."""
     class Meta:
         model = Category
-        fields = ('id', 'name', 'slug')
+        fields = ('name', 'slug')
 
 
 class GenreSerializer(serializers.ModelSerializer):
     """Сериализатор для жанров."""
     class Meta:
         model = Genre
-        fields = ('id', 'name', 'slug')
+        fields = ('name', 'slug')
+
+
+class CategoryMinifiedSerializer(serializers.ModelSerializer):
+    """Сериализатор категории для вложенного отображения в Title."""
+    class Meta:
+        model = Category
+        fields = ('name', 'slug')
+
+
+class GenreMinifiedSerializer(serializers.ModelSerializer):
+    """Сериализатор жанра для вложенного отображения в Title."""
+    class Meta:
+        model = Genre
+        fields = ('name', 'slug')
 
 
 class TitleReadSerializer(serializers.ModelSerializer):

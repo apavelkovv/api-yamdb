@@ -1,38 +1,46 @@
+from django.core.validators import RegexValidator
 from rest_framework import serializers
+
 from .models import User
 from .validators import validate_username_not_me
-from rest_framework_simplejwt.tokens import AccessToken
 
 
 class SignUpSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(validators=[validate_username_not_me])
-    email = serializers.EmailField(validators=[])
+    username = serializers.CharField(
+        max_length=150,
+        validators=[
+            validate_username_not_me,
+            RegexValidator(regex=r'^[\w.@+-]+\Z'),
+        ]
+    )
+    email = serializers.EmailField(max_length=254, validators=[])
 
     class Meta:
         model = User
         fields = ('username', 'email')
 
     def validate(self, data):
-        if User.objects.filter(email=data['email']).exclude(username=data['username']).exists():
-            raise serializers.ValidationError('Этот email уже используется другим пользователем.')
+        email = data['email']
+        username = data['username']
+
+        if User.objects.filter(
+            email=email
+        ).exclude(username=username).exists():
+            raise serializers.ValidationError(
+                'Этот email уже используется другим пользователем.'
+            )
+        if User.objects.filter(
+            username=username
+        ).exclude(email=email).exists():
+            raise serializers.ValidationError(
+                'Этот username уже занят с другим email.'
+            )
         return data
 
 
 class TokenSerializer(serializers.Serializer):
     username = serializers.CharField()
     confirmation_code = serializers.CharField()
-
-    def validate(self, data):
-        try:
-            user = User.objects.get(username=data['username'])
-        except User.DoesNotExist:
-            raise serializers.ValidationError('Пользователь не найден.')
-
-        if user.confirmation_code != data['confirmation_code']:
-            raise serializers.ValidationError('Неверный код подтверждения.')
-
-        token = AccessToken.for_user(user)
-        return {'token': str(token)}
 
 
 class UserSerializer(serializers.ModelSerializer):

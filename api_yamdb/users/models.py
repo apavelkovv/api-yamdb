@@ -9,8 +9,13 @@ class User(AbstractUser):
         ('admin', 'Admin'),
     )
 
+    bio = models.TextField('Биография', blank=True)
     email = models.EmailField(unique=True, verbose_name='email адрес')
-    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='user')
+    role = models.CharField(
+        max_length=20,
+        choices=ROLE_CHOICES,
+        default='user'
+    )
 
     confirmation_code = models.CharField(max_length=100, blank=True, null=True)
 
