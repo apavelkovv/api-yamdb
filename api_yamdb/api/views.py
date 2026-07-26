@@ -2,10 +2,9 @@ from django.db.models import Avg
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, mixins, viewsets
-from rest_framework.pagination import PageNumberPagination
+
 from reviews.models import Category, Genre, Review, Title
 from users.permissions import IsAdminOrReadOnly, IsOwnerOrModeratorOrAdmin
-
 from .filters import TitleFilter
 from .serializers import (CategorySerializer, CommentSerializer,
                           GenreSerializer, ReviewSerializer,
@@ -25,7 +24,6 @@ class CategoryViewSet(
     filter_backends = (filters.SearchFilter,)
     search_fields = ('name',)
     lookup_field = 'slug'
-    pagination_class = PageNumberPagination
 
 
 class GenreViewSet(
@@ -41,7 +39,6 @@ class GenreViewSet(
     filter_backends = (filters.SearchFilter,)
     search_fields = ('name',)
     lookup_field = 'slug'
-    pagination_class = PageNumberPagination
 
 
 class TitleViewSet(viewsets.ModelViewSet):
@@ -50,7 +47,6 @@ class TitleViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAdminOrReadOnly,)
     filter_backends = (DjangoFilterBackend,)
     filterset_class = TitleFilter
-    pagination_class = PageNumberPagination
     http_method_names = ['get', 'post', 'patch', 'delete']
 
     def get_serializer_class(self):
@@ -62,7 +58,6 @@ class TitleViewSet(viewsets.ModelViewSet):
 class CommentViewSet(viewsets.ModelViewSet):
     """ViewSet для комментариев."""
     serializer_class = CommentSerializer
-    pagination_class = PageNumberPagination
     permission_classes = (IsOwnerOrModeratorOrAdmin, )
     http_method_names = ['get', 'post', 'patch', 'delete']
 
@@ -84,7 +79,6 @@ class CommentViewSet(viewsets.ModelViewSet):
 class ReviewViewSet(viewsets.ModelViewSet):
     """ViewSet для отзывов."""
     serializer_class = ReviewSerializer
-    pagination_class = PageNumberPagination
     permission_classes = (IsOwnerOrModeratorOrAdmin, )
     http_method_names = ['get', 'post', 'patch', 'delete']
 
