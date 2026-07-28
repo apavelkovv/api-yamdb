@@ -1,34 +1,24 @@
 from rest_framework import serializers
 
 from reviews.models import Category, Comment, Genre, Review, Title
+from reviews.validators import validate_score
+from reviews.constants import MIN_SCORE, MAX_SCORE
 
 
 class CategorySerializer(serializers.ModelSerializer):
     """Сериализатор для категорий."""
+
     class Meta:
         model = Category
-        fields = ('name', 'slug')
+        exclude = ('id',)
 
 
 class GenreSerializer(serializers.ModelSerializer):
     """Сериализатор для жанров."""
+
     class Meta:
         model = Genre
-        fields = ('name', 'slug')
-
-
-class CategoryMinifiedSerializer(serializers.ModelSerializer):
-    """Сериализатор категории для вложенного отображения в Title."""
-    class Meta:
-        model = Category
-        fields = ('name', 'slug')
-
-
-class GenreMinifiedSerializer(serializers.ModelSerializer):
-    """Сериализатор жанра для вложенного отображения в Title."""
-    class Meta:
-        model = Genre
-        fields = ('name', 'slug')
+        exclude = ('id',)
 
 
 class TitleReadSerializer(serializers.ModelSerializer):
@@ -54,12 +44,17 @@ class TitleWriteSerializer(serializers.ModelSerializer):
     genre = serializers.SlugRelatedField(
         queryset=Genre.objects.all(),
         slug_field='slug',
-        many=True
+        many=True,
+        allow_empty=False,
     )
 
     class Meta:
         model = Title
         fields = ('id', 'name', 'year', 'description', 'genre', 'category')
+
+    def to_representation(self, instance):
+        """Возвращаем данные в формате TitleReadSerializer после создания/обновления."""
+        return TitleReadSerializer(instance).data
 
 
 class ReviewSerializer(serializers.ModelSerializer):
@@ -79,7 +74,7 @@ class ReviewSerializer(serializers.ModelSerializer):
         if request.method == 'POST':
             title_id = self.context['view'].kwargs.get('title_id')
             if Review.objects.filter(
-                title=title_id,
+                title__id=title_id,
                 author=request.user
             ).exists():
                 raise serializers.ValidationError(

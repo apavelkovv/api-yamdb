@@ -2,19 +2,22 @@ from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
+from .constants import MAX_LENGTH_NAME, MAX_LENGTH_SLUG
+
 User = get_user_model()
 
 
 class Category(models.Model):
-    """Модель категории (например, 'Книги', 'Фильмы', 'Музыка')."""
+    """Модель категории."""
     name = models.CharField(
-        max_length=256,
+        max_length=MAX_LENGTH_NAME,
         verbose_name='Название категории'
     )
-    slug = models.SlugField(max_length=50,
-                            unique=True,
-                            verbose_name='Уникальный слаг'
-                            )
+    slug = models.SlugField(
+        max_length=MAX_LENGTH_SLUG,
+        unique=True,
+        verbose_name='Уникальный слаг'
+    )
 
     class Meta:
         verbose_name = 'Категория'
@@ -26,10 +29,13 @@ class Category(models.Model):
 
 
 class Genre(models.Model):
-    """Модель жанра (например, 'Сказка', 'Рок', 'Артхаус')."""
-    name = models.CharField(max_length=256, verbose_name='Название жанра')
+    """Модель жанра."""
+    name = models.CharField(
+        max_length=MAX_LENGTH_NAME,
+        verbose_name='Название жанра'
+    )
     slug = models.SlugField(
-        max_length=50,
+        max_length=MAX_LENGTH_SLUG,
         unique=True,
         verbose_name='Уникальный слаг'
     )
@@ -46,13 +52,20 @@ class Genre(models.Model):
 class Title(models.Model):
     """Модель произведения."""
     name = models.CharField(
+<<<<<<< HEAD
+        max_length=MAX_LENGTH_NAME,
+=======
         max_length=256,
+>>>>>>> main
         verbose_name='Название произведения'
     )
     year = models.PositiveSmallIntegerField(
         verbose_name='Год выпуска',
+<<<<<<< HEAD
+=======
         null=True,
         blank=True
+>>>>>>> main
     )
     description = models.TextField(
         verbose_name='Описание',
