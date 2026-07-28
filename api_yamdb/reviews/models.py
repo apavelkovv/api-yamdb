@@ -52,20 +52,13 @@ class Genre(models.Model):
 class Title(models.Model):
     """Модель произведения."""
     name = models.CharField(
-<<<<<<< HEAD
         max_length=MAX_LENGTH_NAME,
-=======
-        max_length=256,
->>>>>>> main
         verbose_name='Название произведения'
     )
     year = models.PositiveSmallIntegerField(
         verbose_name='Год выпуска',
-<<<<<<< HEAD
-=======
         null=True,
         blank=True
->>>>>>> main
     )
     description = models.TextField(
         verbose_name='Описание',

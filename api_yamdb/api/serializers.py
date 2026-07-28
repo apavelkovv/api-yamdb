@@ -1,8 +1,6 @@
 from rest_framework import serializers
 
 from reviews.models import Category, Comment, Genre, Review, Title
-from reviews.validators import validate_score
-from reviews.constants import MIN_SCORE, MAX_SCORE
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -53,7 +51,7 @@ class TitleWriteSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'year', 'description', 'genre', 'category')
 
     def to_representation(self, instance):
-        """Возвращаем данные в формате TitleReadSerializer после создания/обновления."""
+        """Возвращаем данные TitleReadSerializer после создания/обновления."""
         return TitleReadSerializer(instance).data
 
 

@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 
 from .constants import MAX_SCORE, MIN_SCORE
 
+
 def validate_year(value):
     """Проверяет, что год не превышает текущий."""
     current_year = datetime.now().year
@@ -13,7 +14,8 @@ def validate_year(value):
             _('Год не может быть больше текущего (%(current_year)s)'),
             params={'current_year': current_year},
         )
-        
+
+
 def validate_score(value):
     """Проверяет, что оценка в диапазоне от 1 до 10."""
     if not (MIN_SCORE <= value <= MAX_SCORE):
