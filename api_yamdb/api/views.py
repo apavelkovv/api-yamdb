@@ -5,7 +5,6 @@ from rest_framework import filters, mixins, viewsets
 
 from reviews.models import Category, Genre, Review, Title
 from users.permissions import IsAdminOrReadOnly, IsOwnerOrModeratorOrAdmin
-
 from .filters import TitleFilter
 from .serializers import (
     CategorySerializer,

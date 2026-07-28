@@ -100,7 +100,8 @@ class Review(models.Model):
     title = models.ForeignKey(
         Title,
         on_delete=models.CASCADE,
-        related_name='reviews'
+        related_name='reviews',
+        verbose_name='Заголовок отзыва'
     )
     text = models.TextField(verbose_name='Текст отзыва')
     author = models.ForeignKey(
@@ -131,8 +132,8 @@ class Review(models.Model):
         ]
 
     def __str__(self):
-        return f'''Отзыв {self.id} на произведение
-                {self.title.name} от {self.author.username}'''
+        return (f'Отзыв {self.id} на произведение'
+                f'{self.title.name} от {self.author.username}')
 
 
 class Comment(models.Model):
@@ -159,5 +160,5 @@ class Comment(models.Model):
         ordering = ('-pub_date',)
 
     def __str__(self):
-        return f'''Комментарий {self.id} к отзыву
-                {self.review.id} от {self.author.username}'''
+        return (f'Комментарий {self.id} к отзыву '
+                f'{self.review.id} от {self.author.username}')
