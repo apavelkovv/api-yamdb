@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.db import models
 
+from .constants import MAX_LENGTH_NAME, MAX_LENGTH_CODE
 from .validators import validate_username_not_me
 
 
@@ -13,7 +14,7 @@ class User(AbstractUser):
 
     username = models.CharField(
         'Имя пользователя',
-        max_length=150,
+        max_length=MAX_LENGTH_NAME,
         unique=True,
         validators=[
             RegexValidator(regex=r'^[\w.@+-]+\Z'),
@@ -29,8 +30,16 @@ class User(AbstractUser):
         default=Role.USER
     )
     confirmation_code = models.CharField(
-        max_length=100, blank=True, null=True
+        max_length=MAX_LENGTH_CODE, blank=True, null=True
     )
+
+    class Meta:
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
+        ordering = ('username',)
+
+    def __str__(self):
+        return self.username
 
     @property
     def is_admin(self):
@@ -43,11 +52,3 @@ class User(AbstractUser):
     @property
     def is_moderator(self):
         return self.role == self.Role.MODERATOR
-
-    class Meta:
-        verbose_name = 'Пользователь'
-        verbose_name_plural = 'Пользователи'
-        ordering = ('username',)
-
-    def __str__(self):
-        return self.username

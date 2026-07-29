@@ -3,6 +3,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 from .constants import MAX_LENGTH_NAME, MAX_LENGTH_SLUG
+from .validators import validate_year, validate_score
 
 User = get_user_model()
 
@@ -58,7 +59,8 @@ class Title(models.Model):
     year = models.PositiveSmallIntegerField(
         verbose_name='Год выпуска',
         null=True,
-        blank=True
+        blank=True,
+        validators=[validate_year]
     )
     description = models.TextField(
         verbose_name='Описание',
@@ -105,10 +107,7 @@ class Review(models.Model):
     )
     score = models.PositiveSmallIntegerField(
         verbose_name='Оценка',
-        validators=[
-            MinValueValidator(1),
-            MaxValueValidator(10)
-        ]
+        validators=[validate_score]
     )
     pub_date = models.DateTimeField(auto_now_add=True,
                                     verbose_name='Дата публикации')

@@ -3,6 +3,7 @@ import secrets
 from django.conf import settings
 from django.core.mail import send_mail
 from django.core.validators import RegexValidator
+from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 
 from .models import User
@@ -69,7 +70,6 @@ class TokenSerializer(serializers.Serializer):
     confirmation_code = serializers.CharField()
 
     def validate(self, data):
-        from django.shortcuts import get_object_or_404
         user = get_object_or_404(User, username=data['username'])
         if user.confirmation_code != data['confirmation_code']:
             raise serializers.ValidationError(
